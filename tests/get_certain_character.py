@@ -3,8 +3,8 @@ from library.API_commands import APICommands
 
 class TestSuiteGetAllCharacters:
 
-    def setup_class(cls):
-        print("\ntest case setup ")
+    def setup_class(self):
+        print("\ntest suite setup ")
         commands = APICommands()
         character_dict = APICommands.generate_character(commands, character_name="Vasya")
         result, status_code = commands.get_certain_character("Vasya")
@@ -14,8 +14,8 @@ class TestSuiteGetAllCharacters:
             commands.delete_character("Vasya")
             commands.add_character(character_dict)
 
-    def teardown_class(cls):
-        print("\ntest case teardown")
+    def teardown_class(self):
+        print("\ntest suite teardown")
         commands = APICommands()
         result, status_code = commands.get_certain_character("Vasya")
         if str(result['result']) != "No such name":

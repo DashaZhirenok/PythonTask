@@ -101,3 +101,24 @@ class APICommands:
                               "weight": character_weight, "height": character_height, "identity": character_identity,
                                "other_aliases": character_other_aliases})
         return character_dict
+
+    def add_some_characters(self, character_name="Vasya", number_of_characters=1):
+        commands = APICommands()
+        i = 0
+        while i < number_of_characters:
+            result, status_code = commands.get_certain_character(character_name + str(i))
+            if str(result['result']) == "No such name":
+                character_dict = APICommands.generate_character(commands, character_name=character_name + str(i))
+                commands.add_character(character_dict)
+                result, status_code = commands.get_certain_character(character_name + str(i))
+                commands.check_character(result['result'][0])
+            i += 1
+
+    def del_some_characters(self, character_name="Vasya", number_of_characters=1):
+        commands = APICommands()
+        i = 0
+        while i < number_of_characters:
+            result, status_code = commands.get_certain_character(character_name + str(i))
+            if str(result['result']) != "No such name":
+                commands.delete_character(character_name + str(i))
+            i += 1
