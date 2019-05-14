@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import requests
+import json
 
 
 class APICommands:
@@ -12,6 +13,7 @@ class APICommands:
     def get_all_characters(self, login=LOGIN, password=PASSWORD):
         """
         get information about all characters
+
         :param login: login for authorization
         :param password: password for authorization
         :return: response(json), status_code
@@ -22,6 +24,7 @@ class APICommands:
     def get_certain_character(self, character_name,  login=LOGIN, password=PASSWORD):
         """
         get information about certain character by name
+
         :param character_name: name of character(string)
         :param login: login for authorization
         :param password: password for authorization
@@ -30,21 +33,46 @@ class APICommands:
         response = requests.get(url=self.base_url + "/character/" + character_name, auth=(login, password))
         return response.json(), response.status_code
 
-    def create_character(self, character, login=LOGIN, password=PASSWORD):
+    def add_character(self, character_dict, login=LOGIN, password=PASSWORD):
         """
-        create information about character
-        POST / character
-        """
+        add information about character
 
-    def update_character(self, character_name, login=LOGIN, password=PASSWORD):
+        :param character_dict: dict with character. for example:
+        {"name": "Hawkeye", "universe": "Marvel Universe",
+           "education": "High school (unfinished)", "weight": 104,
+           "height": 1.90, "identity": "Publicly known",
+           "other_aliases": "None"}
+        :param login: login for authorization
+        :param password: password for authorization
+        :return: response(json), status_code
+        """
+        headers = {"Content-type": "application/json", "Content-Encoding": "utf-8"}
+        response = requests.post(url=self.base_url + "/character", auth=(login, password), headers=headers,
+                                 data=json.dumps(character_dict))
+        return response.json(), response.status_code
+
+    def update_character(self, character_name, character_dict, login=LOGIN, password=PASSWORD):
         """
         update information about character by name
-        PUT / character / {name}
+        :param character_name: name of character(string)
+        :param character_dict: dict with character. for example:
+        {"name": "Hawkeye", "universe": "Marvel Universe",
+           "education": "High school (unfinished)", "weight": 104,
+           "height": 1.90, "identity": "Publicly known",
+           "other_aliases": "None"}
+        :param login: login for authorization
+        :param password: password for authorization
+        :return: response(json), status_code
         """
+        headers = {"Content-type": "application/json", "Content-Encoding": "utf-8"}
+        response = requests.put(url=self.base_url + "/character/" + character_name, auth=(login, password), headers=headers,
+                                 data=json.dumps(character_dict))
+        return response.json(), response.status_code
 
     def delete_character(self, character_name, login=LOGIN, password=PASSWORD):
         """
         delete information about certain character by name
+
         :param character_name: name of character(string)
         :param login: login for authorization
         :param password: password for authorization
@@ -53,14 +81,23 @@ class APICommands:
         response = requests.delete(url=self.base_url + "/character/" + character_name, auth=(login, password))
         return response.json(), response.status_code
 
-    def check_character(self, character):
-        # todo
-        if character:
-            assert True
+    # helpful functions
+    def check_character(self, character_dict):
+        keys = ["name", "universe", "education", "weight", "height", "identity", "other_aliases"]
+        # todo check that in keys valid values
+        for cur_key in keys:
+            assert cur_key in character_dict
         pass
 
-
-# commands = APICommands()
-# commands.get_all_characters()
-# commands.get_certain_character("Absorbing Man")
-# commands.delete_character("3-D Man")
+    def generate_character(self, character_name="Hawkeye", character_universe="Marvel Universe",
+                       character_education="High school (unfinished)", character_weight=104,
+                       character_height=1.90, character_identity="Publicly known", character_other_aliases="None"):
+        """
+        generate character by params
+        :return: character_dict
+        """
+        character_dict = {}
+        character_dict.update({"name": character_name, "universe": character_universe, "education": character_education,
+                              "weight": character_weight, "height": character_height, "identity": character_identity,
+                               "other_aliases": character_other_aliases})
+        return character_dict

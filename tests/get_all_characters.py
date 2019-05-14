@@ -16,6 +16,6 @@ class TestSuiteGetAllCharacters:
 
     def test_get_all_characters_by_invalid_user(self):
         commands = APICommands()
-        all_characters, status_code = commands.get_all_characters("some_login", "some_password")
-        assert str(status_code) == "401"
+        error, status_code = commands.get_all_characters("some_login", "some_password")
+        assert str(status_code) == "401" and str(error['error']) == "You have to login with proper credentials"
 
