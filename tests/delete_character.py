@@ -21,8 +21,8 @@ class TestSuiteDelCharacter:
         result, status_code = commands.delete_character("Vasya0")
         assert str(status_code) == "200" and "is deleted" in str(result["result"])
 
-    def test_case_del_character_by_invalid_user(self):
-        print("\ndelete character that exists by INVALID user")
+    def test_case_del_character_by_invalid_password(self):
+        print("\ndelete character that exists by INVALID password for user")
         commands = APICommands()
         error, status_code = commands.delete_character("Vasya0", "some_login", "some_password")
         assert str(status_code) == "401" and str(error['error']) == "You have to login with proper credentials"

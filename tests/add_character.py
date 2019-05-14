@@ -31,8 +31,8 @@ class TestSuiteAddCharacter:
         result, status_code = commands.add_character(character_dict)
         assert str(status_code) == "200" and str((result['result'])) == "Vasya0 is already exists"
 
-    def test_add_character_by_invalid_user(self):
-        print("\nadd valid character by INVALID user")
+    def test_add_character_by_invalid_password(self):
+        print("\nadd valid character by INVALID password for user")
         commands = APICommands()
         character_dict = APICommands.generate_character(commands, character_name="Vasya0")
         error, status_code = commands.add_character(character_dict, "some_login", "some_password")

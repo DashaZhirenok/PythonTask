@@ -28,8 +28,8 @@ class TestSuiteGetAllCharacters:
         assert str(status_code) == "200"
         commands.check_character(result['result'][0])
 
-    def test_get_character_by_invalid_user(self):
-        print("\nget character that exists by invalid user")
+    def test_get_character_by_invalid_password(self):
+        print("\nget character that exists by INVALID password for user")
         commands = APICommands()
         error, status_code = commands.get_certain_character("Vasya", "some_login", "some_password")
         assert str(status_code) == "401" and str(error['error']) == "You have to login with proper credentials"
